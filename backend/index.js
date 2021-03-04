@@ -30,7 +30,7 @@ app.post('/login', (req, res) => {
   const user = users.find(u => { return u.email === email && u.password === password });
 
   if (!user) {
-    res.status(400).send('Email or password incorrect');
+    return res.status(400).send('Email or password incorrect');
   }
   // generate an access token
   const accessToken = jwt.sign({ email: user.email, role: user.role }, accessTokenSecret, { expiresIn: '20m' });
@@ -38,7 +38,7 @@ app.post('/login', (req, res) => {
 
   refreshTokens.push(refreshToken);
 
-  res.json({
+  return res.json({
     user: user,
     accessToken,
     refreshToken
