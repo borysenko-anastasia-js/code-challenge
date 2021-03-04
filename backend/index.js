@@ -23,18 +23,18 @@ const refreshTokens = [];
 app.use(bodyParser.json());
 
 app.post('/login', (req, res) => {
-  // read username and password from request body
+  // read email and password from request body
   const { email, password } = req.body;
 
-  // filter user from the users array by username and password
+  // filter user from the users array by email and password
   const user = users.find(u => { return u.email === email && u.password === password });
 
   if (!user) {
     res.status(400).send('Email or password incorrect');
   }
   // generate an access token
-  const accessToken = jwt.sign({ username: user.username, role: user.role }, accessTokenSecret, { expiresIn: '20m' });
-  const refreshToken = jwt.sign({ username: user.username, role: user.role }, refreshTokenSecret);
+  const accessToken = jwt.sign({ email: user.email, role: user.role }, accessTokenSecret, { expiresIn: '20m' });
+  const refreshToken = jwt.sign({ email: user.email, role: user.role }, refreshTokenSecret);
 
   refreshTokens.push(refreshToken);
 
